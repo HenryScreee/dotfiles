@@ -1,39 +1,54 @@
-* {
-    border: none;
-    border-radius: 0;
-    font-family: "DejaVu Sans Mono", "FontAwesome";
-    font-size: 14px;
-    min-height: 0;
+* { font-size: 14px; border-radius: 5px; }
+
+window#waybar {  
+    font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free", monospace;  
+    background-color: transparent;  
+    border-bottom: 0px;  
+    color: #EADDFF;  
+} 
+
+.modules-right { margin: 10px 10px 0 0; } 
+.modules-center { margin: 10px 0 0 0; } 
+.modules-left { margin: 10px 0 0 10px; } 
+
+button { border: none; } 
+
+#workspaces { background-color: #2D1B4E; } 
+#workspaces button { padding: 0 5px; background-color: transparent; color: #EADDFF; border-radius: 0; } 
+
+#cpu, #memory, #custom-gpu, #custom-quotes, #custom-cava, #clock, #mpris, #wireplumber, #battery, #tray { 
+    background-color: #2D1B4E; 
+    color: #EADDFF; 
+    padding: 0 10px; 
+    margin: 0 2px;
+} 
+
+#custom-cava {
+    color: #8A2BE2;
+    min-width: 100px;
 }
 
-window#waybar {
-    background: @background;
-    color: @foreground;
-    border-bottom: 2px solid @color11;
+#clock {
+    font-weight: bold;
+    min-width: 150px;
 }
-
-#workspaces button {
-    padding: 0 5px;
-    background: transparent;
-    color: @foreground;
-}
-
-#workspaces button.active {
-    color: @color14;
-}
-
-#clock, #pulseaudio, #network, #tray, #custom-cava {
-    padding: 0 10px;
-    background: transparent;
-    color: @foreground;
-}
-
-/* Import Pywal colors */
-@import "../../.cache/wal/colors-waybar.css";
 
 #custom-quotes {
-    padding-left: 10px;
-    padding-right: 10px;
+    min-width: 100px;
     font-style: italic;
-    color: @color14;
 }
+
+#hyprland\/submap { background-color: #D0BCFF; color: #1a0b2e; padding: 0 10px; } 
+
+#wireplumber.muted { background-color: #4A4559; } 
+#mpris.playing { background-color: #7E57C2; } 
+
+#battery.charging, #battery.plugged { color: #A6E3A1; } 
+#battery.critical:not(.charging) { 
+    color: #F38BA8; 
+    animation-name: blink; 
+    animation-duration: 0.5s; 
+    animation-timing-function: linear; 
+    animation-iteration-count: infinite; 
+} 
+@keyframes blink { to { color: #ffffff; } }
