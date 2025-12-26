@@ -127,6 +127,10 @@ fi
 
 # --- 6. FINALIZE ---
 chmod +x "$DOTFILES_DIR/install.sh"
+
+# Generate default colors to prevent crash
+mkdir -p ~/.cache/wal
+cp "$DOTFILES_DIR/.config/wal/templates/colors-hyprland.conf" ~/.cache/wal/colors-hyprland.conf
 echo -e "${GREEN}Installation Complete!${RESET}"
 echo -e "IMPORTANT: Open 'waypaper', select an image, and click 'Set' to generate colors."
 echo -e "Then reboot your system."
