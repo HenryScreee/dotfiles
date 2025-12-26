@@ -2,6 +2,7 @@ configuration {
     modi: "drun,run";
     show-icons: true;
     icon-theme: "Papirus";
-    font: "JetBrainsMono Nerd Font 12";
+    /* Enforce DejaVu Sans Mono here */
+    font: "DejaVu Sans Mono 12";
 }
 @import "~/.cache/wal/colors-rofi-dark.rasi"
