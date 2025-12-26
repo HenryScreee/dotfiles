@@ -125,5 +125,15 @@ gsettings set org.gnome.desktop.interface gtk-theme 'Materia-dark-compact'
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
+
+# --- 6. DEBLOAT (Remove archinstall defaults) ---
+echo -e "${YELLOW}Removing incompatible default apps (wofi, kitty, dolphin, mako)...${RESET}"
+for pkg in wofi kitty foot dolphin mako; do
+    if pacman -Qi $pkg &>/dev/null; then
+        sudo pacman -Rns --noconfirm $pkg 2>/dev/null
+        echo "Removed $pkg"
+    fi
+done
+
 echo -e "${GREEN}Installation Complete!${RESET}"
 echo "Reboot, then hit Super+Ctrl+W to set your wallpaper."
