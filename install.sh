@@ -92,6 +92,7 @@ link_config() {
 }
 
 # Link core configs
+link_config ".config/rofi/config.rasi"
 link_config ".config/hypr/hyprland.conf"
 link_config ".config/waybar/config"
 link_config ".config/waybar/style.css"
