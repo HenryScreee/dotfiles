@@ -1,67 +1,32 @@
 * {
+    border: none;
+    border-radius: 0;
+    font-family: "DejaVu Sans Mono", "FontAwesome";
     font-size: 14px;
-    border-radius: 5px;
-    /* Primary font: DejaVu Sans Mono. Fallbacks for icons: Nerd Font + FontAwesome */
-    font-family: "DejaVu Sans Mono", "JetBrainsMono Nerd Font", "Font Awesome 6 Free", monospace;
+    min-height: 0;
 }
 
 window#waybar {
-    background-color: transparent;
-    border-bottom: 0px;
-    color: #EADDFF;
-    transition: background-color .5s;
+    background: @background;
+    color: @foreground;
+    border-bottom: 2px solid @color11;
 }
-window#waybar.hidden { opacity: 0.2; }
 
-/* Margins */
-.modules-right { margin: 10px 10px 0 0; }
-.modules-center { margin: 10px 0 0 0; }
-.modules-left { margin: 10px 0 0 10px; }
-
-button { border: none; }
-
-/* Workspaces */
-#workspaces { background-color: #2D1B4E; }
 #workspaces button {
-    padding: 0 5px; background-color: transparent; color: #EADDFF; border-radius: 0;
-}
-#workspaces button:first-child { border-radius: 5px 0 0 5px; }
-#workspaces button:last-child { border-radius: 0 5px 5px 0; }
-#workspaces button:hover { color: #D0BCFF; }
-#workspaces button.focused { background-color: #5B3785; }
-
-/* Modules */
-#cpu, #memory, #custom-gpu {
-    background-color: #2D1B4E; color: #EADDFF; padding: 0 10px; min-width: 130px;
-}
-#custom-gpu { min-width: 140px; }
-#hyprland\/submap { background-color: #D0BCFF; color: #1a0b2e; padding: 0 10px; }
-
-/* Cava */
-window#waybar #cava {
-    margin-right: 0; background-color: #2D1B4E; color: #8A2BE2;
-    min-width: 140px; padding: 0 1px;
+    padding: 0 5px;
+    background: transparent;
+    color: @foreground;
 }
 
-/* Clock */
-window#waybar #clock {
-    background-color: rgba(0,0,0,0); color: #EADDFF;
-    margin-left: -150px; min-width: 140px; padding: 0 5px;
-    border: none; box-shadow: none;
+#workspaces button.active {
+    color: @color14;
 }
 
-/* Common Modules */
-#mpris, #wireplumber, #battery, #tray {
-    padding: 0 10px; background-color: #2D1B4E; color: #EADDFF;
+#clock, #pulseaudio, #network, #tray, #custom-cava {
+    padding: 0 10px;
+    background: transparent;
+    color: @foreground;
 }
-#wireplumber.muted { background-color: #4A4559; }
-#mpris.playing { background-color: #7E57C2; }
 
-/* Battery Colors */
-#battery.charging, #battery.plugged { color: #A6E3A1; }
-#battery.critical:not(.charging) {
-    color: #F38BA8;
-    animation-name: blink; animation-duration: 0.5s;
-    animation-timing-function: linear; animation-iteration-count: infinite;
-}
-@keyframes blink { to { color: #ffffff; } }
+/* Import Pywal colors */
+@import "../../.cache/wal/colors-waybar.css";

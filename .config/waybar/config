@@ -1,46 +1,48 @@
 {
-    "height": 30,
-    "spacing": 4,
     "layer": "top",
     "position": "top",
-    "modules-left": [ "cpu", "custom/gpu", "memory", "hyprland/submap" ],
-    "modules-center": [ "cava", "clock" ],
-    "modules-right": [ "mpris", "wireplumber", "battery", "tray" ],
+    "height": 34,
+    "spacing": 4,
+    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["custom/cava", "pulseaudio", "network", "tray"],
 
-    "cpu": { "interval": 2, "format": "CPU {usage}% {avg_frequency}GHz", "max-length": 25 },
-    "memory": { "interval": 5, "format": "RAM {used:0.1f}G", "max-length": 15 },
-    "custom/gpu": {
-        "exec": "timeout 2s nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader,nounits | awk -F', ' '{printf \"GPU %s%% %.1fGiB\", $1, $2/1024}'",
-        "format": "{}", "interval": 5, "return-type": "", "on-click": "nvidia-settings"
+    // --- MODULES ---
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "active": ""
+        }
     },
-    "hyprland/submap": { "format": "{}" },
-    "cava": {
-        "framerate": 60, "autosens": 1, "bars": 16, "method": "pipewire", "source": "auto",
-        "stereo": true, "reverse": false, "bar_delimiter": 0, "monstercat": false, "waves": false,
-        "noise_reduction": 0.77, "input_delay": 2, "hide_on_silence": true,
-        "format-icons": [" ", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
-        "actions": { "on-click-right": "mode" }
-    },
+
     "clock": {
-        "format": "{:%a %d %I:%M %p}", "format-alt": "{:%Y-%m-%d}",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>"
+        "format": "{:%I:%M %p}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>"
     },
-    "mpris": {
-        "format": " {status_icon} {dynamic}", "interval": 1, "dynamic-len": 40,
-        "status-icons": { "playing": "▶", "paused": "⏸", "stopped": "" },
-        "ignored-players": ["firefox"]
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " Muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"  // <--- FIXED: Opens mixer
     },
-    "wireplumber": {
-        "format": "{icon} {volume}%", "format-muted": "",
-        "format-icons": ["", "", ""], "on-click": "pavucontrol"
+
+    "custom/cava": {
+        "exec": "cava | sed -u 's/;//g;s/0/ /g;s/1/▂/g;s/2/▃/g;s/3/▄/g;s/4/▅/g;s/5/▆/g;s/6/▇/g;s/7/█/g;'",
+        "format": "{}",
+        "tooltip": false
     },
-    "battery": {
-        "states": { "good": 95, "warning": 30, "critical": 15 },
-        "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-alt": "{time} {icon}",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "tray": { "icon-size": 14, "spacing": 10 }
+
+    "network": {
+        "format-wifi": " {essid}",
+        "format-ethernet": " Wired",
+        "format-disconnected": "⚠ Disconnected",
+        "on-click": "nm-connection-editor"
+    }
 }
