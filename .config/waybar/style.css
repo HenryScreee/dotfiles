@@ -30,3 +30,10 @@ window#waybar {
 
 /* Import Pywal colors */
 @import "../../.cache/wal/colors-waybar.css";
+
+#custom-quotes {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-style: italic;
+    color: @color14;
+}
