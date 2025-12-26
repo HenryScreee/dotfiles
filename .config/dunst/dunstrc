@@ -1,0 +1,23 @@
+[global]
+    width = 300
+    height = 300
+    offset = 30x50
+    origin = top-right
+    transparency = 10
+    frame_color = "#89B4FA"
+    font = DejaVu Sans Mono 11
+    
+    # Progress bar
+    progress_bar = true
+    progress_bar_height = 10
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 300
+
+    separator_height = 2
+    padding = 8
+    horizontal_padding = 8
+    text_icon_padding = 0
+    frame_width = 2
+    
+    sort = yes

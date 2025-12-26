@@ -92,6 +92,11 @@ link_config() {
 }
 
 # Link core configs
+link_config ".config/fastfetch/config.jsonc"
+link_config ".config/fish/config.fish"
+link_config ".config/hypr/hypridle.conf"
+link_config ".config/hypr/hyprlock.conf"
+link_config ".config/dunst/dunstrc"
 link_config ".config/rofi/config.rasi"
 link_config ".config/hypr/hyprland.conf"
 link_config ".config/waybar/config"
