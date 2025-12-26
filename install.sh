@@ -92,6 +92,7 @@ link_config() {
 }
 
 # Link core configs
+link_config ".config/waypaper/config.ini"
 link_config ".config/fastfetch/config.jsonc"
 link_config ".config/fish/config.fish"
 link_config ".config/hypr/hypridle.conf"
