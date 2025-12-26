@@ -1,0 +1,44 @@
+{
+    "height": 30, "spacing": 4,
+    "modules-left": [ "cpu", "custom/gpu", "memory", "hyprland/submap" ],
+    "modules-center": [ "cava", "clock" ],
+    "modules-right": [ "mpris", "wireplumber", "battery", "tray" ],
+
+    "cpu": { "interval": 2, "format": "CPU {usage}% {avg_frequency}GHz", "max-length": 25 },
+    "memory": { "interval": 5, "format": "RAM {used:0.1f}G", "max-length": 15 },
+    "hyprland/submap": { "format": "{}" },
+    "clock": { "format": "{:%a %d %I:%M %p}", "format-alt": "{:%Y-%m-%d}" },
+    "cava": {
+        "framerate": 30, "autosens": 1, "bars": 16,
+        "method": "pipewire", "source": "auto", "stereo": true, "reverse": false,
+        "bar_delimiter": 0, "noise_reduction": 0.77, "input_delay": 2, "hide_on_silence": false, 
+        "format-icons": [" ", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+        "actions": { "on-click-right": "mode" }
+    },
+    "mpris": { 
+        "format": " {status_icon} {dynamic}", 
+        "interval": 1, 
+        "dynamic-len": 40, 
+        "status-icons": { "playing": "▶", "paused": "⏸", "stopped": "" }, 
+        "ignored-players": ["firefox"] 
+    },
+    "wireplumber": { 
+        "format": "{icon} {volume}%", 
+        "format-muted": "", 
+        "format-icons": ["", "", ""], 
+        "on-click": "pavucontrol" 
+    },
+    "tray": { "icon-size": 14, "spacing": 10 },
+    "battery": {
+        "states": { "good": 95, "warning": 30, "critical": 15 },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "custom/gpu": {
+        "exec": "nvidia-smi --query-gpu=utilization.gpu,memory.used --format=csv,noheader,nounits | awk -F', ' '{printf \"GPU %s%% %.1fGiB\", $1, $2/1024}'",
+        "format": "{}", "return-type": "", "interval": 2
+    }
+}
