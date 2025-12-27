@@ -1,6 +1,6 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------
-# Henry's Hyprland Installer (v7 - The "It Just Works" Edition)
+# Henry's Hyprland Installer (v8 - The "Config Enforcer" Edition)
 # -----------------------------------------------------------------------------
 GREEN="\e[32m"; YELLOW="\e[33m"; RED="\e[31m"; RESET="\e[0m"
 DOTFILES_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -18,12 +18,10 @@ fi
 echo -e "${YELLOW}Updating Keyrings...${RESET}"
 sudo pacman -Sy --noconfirm archlinux-keyring
 
-# --- 3. INSTALL CORE PACKAGES ---
-# We split this to ensure vital tools (git, python) are present first
-echo -e "${YELLOW}Installing Base Dependencies...${RESET}"
+# --- 3. INSTALL PACKAGES ---
+echo -e "${YELLOW}Installing Dependencies...${RESET}"
 sudo pacman -S --needed --noconfirm git base-devel python python-pip python-requests
 
-# Full Package List
 PKGS=(
     # Desktop
     hyprland hypridle hyprlock waybar swww waypaper rofi-wayland
@@ -32,7 +30,8 @@ PKGS=(
     
     # Theming
     nwg-look qt5ct qt6ct kvantum unzip curl
-    materia-gtk-theme papirus-icon-theme ttf-jetbrains-mono-nerd
+    materia-gtk-theme papirus-icon-theme 
+    ttf-jetbrains-mono-nerd noto-fonts-emoji noto-fonts-cjk
     
     # Tools
     alacritty fish fastfetch nautilus firefox vesktop steam pavucontrol
@@ -46,7 +45,7 @@ PKGS=(
     $GPU_PKGS
 )
 
-echo -e "${YELLOW}Installing Main Packages...${RESET}"
+echo -e "${YELLOW}Installing Packages...${RESET}"
 if command -v yay &> /dev/null; then
     yay -S --needed --noconfirm "${PKGS[@]}"
 else
@@ -56,11 +55,11 @@ else
     yay -S --needed --noconfirm "${PKGS[@]}"
 fi
 
-# --- 4. PRE-GENERATE COLORS (Crucial Fix) ---
+# --- 4. PRE-GENERATE COLORS (FIXED) ---
 echo -e "${YELLOW}Generating Initial Colors...${RESET}"
 mkdir -p ~/.cache/wal
-# Create a valid dummy file so Hyprland doesn't crash on first boot
-cat > ~/.cache/wal/colors-hyprland.conf <<EOC
+# Uses single quotes 'EOC' to prevent variable expansion failure
+cat > ~/.cache/wal/colors-hyprland.conf <<'EOC'
 $background = rgb(111111)
 $foreground = rgb(eeeeee)
 $color0 = rgb(111111)
@@ -95,7 +94,6 @@ link_config() {
     echo "Linked $1"
 }
 
-# Core Configs
 link_config ".config/hypr/hyprland.conf"
 link_config ".config/hypr/hyprlock.conf"
 link_config ".config/hypr/hypridle.conf"
@@ -109,7 +107,7 @@ link_config ".config/fish/config.fish"
 link_config ".config/fastfetch/config.jsonc"
 link_config ".config/waypaper/config.ini"
 
-# Cava Fix (Force Copy instead of Link if issues persist)
+# Force Cava Config
 mkdir -p ~/.config/cava
 cp "$DOTFILES_DIR/.config/cava/config_waybar" ~/.config/cava/config_waybar
 
@@ -117,8 +115,10 @@ cp "$DOTFILES_DIR/.config/cava/config_waybar" ~/.config/cava/config_waybar
 rm -rf ~/.config/nwg-dock-hyprland
 ln -s "$DOTFILES_DIR/.config/nwg-dock-hyprland" ~/.config/nwg-dock-hyprland
 
-# --- 6. SETUP THEME & CURSOR ---
-echo -e "${YELLOW}Setting up Theme & Cursor...${RESET}"
+# --- 6. SETUP THEME & CURSOR (HARD ENFORCEMENT) ---
+echo -e "${YELLOW}Enforcing Theme, Cursor, and Shell...${RESET}"
+
+# Install Cursor
 mkdir -p ~/.icons
 if [ ! -d "$HOME/.icons/Posy_Cursor" ]; then
     git clone https://github.com/simtrami/posy-improved-cursor-linux.git /tmp/posy
@@ -126,19 +126,12 @@ if [ ! -d "$HOME/.icons/Posy_Cursor" ]; then
     rm -rf /tmp/posy
 fi
 
-gsettings set org.gnome.desktop.interface gtk-theme 'Materia-dark'
-gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
-gsettings set org.gnome.desktop.interface cursor-theme 'Posy_Cursor'
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-
-# --- 7. FINAL TOUCHES ---
-chmod +x "$HOME/.config/waybar/scripts/quotes.py"
-sed -i "s|/home/henrys|$HOME|g" $HOME/.config/hypr/hyprland.conf
-sed -i "s|HOME_DIR|$HOME|g" $HOME/.config/waypaper/config.ini
-
-# Enable SDDM
-sudo systemctl enable sddm
-
-echo -e "${GREEN}Installation Complete! Rebooting in 5 seconds...${RESET}"
-sleep 5
-reboot
+# Write GTK 3 Settings (Fixes Cursor/Theme in Apps)
+mkdir -p ~/.config/gtk-3.0
+cat > ~/.config/gtk-3.0/settings.ini <<EOF
+[Settings]
+gtk-theme-name=Materia-dark
+gtk-icon-theme-name=Papirus
+gtk-font-name=Sans 11
+gtk-cursor-theme-name=Posy_Cursor
+gtk-application-prefer-dark-theme=1
