@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json, random, os, sys
 
-# Try imports, fail gracefully if requests is missing (should be fixed now though)
+# Try imports
 try:
     import requests
 except ImportError:
@@ -15,11 +15,14 @@ def fetch_and_cache():
     """Fetches the full list of quotes and saves to /tmp"""
     try:
         response = requests.get(URL, timeout=5)
+        
+        # --- THE FIX: FORCE UTF-8 ENCODING ---
+        response.encoding = 'utf-8' 
+        # -------------------------------------
+        
         response.raise_for_status()
         content = response.text
         
-        # Jamie's API sometimes returns raw JS arrays like ['a','b'] instead of strict JSON
-        # If json.loads fails, we wrap it in valid syntax or Regex it.
         try:
             quotes = json.loads(content)
         except json.JSONDecodeError:
@@ -39,22 +42,24 @@ def fetch_and_cache():
     return []
 
 def get_quote():
-    # 1. Try to read from local Cache (0 Network)
+    # 1. Try to read from local Cache
     if os.path.exists(CACHE_FILE):
         try:
             with open(CACHE_FILE, "r") as f:
                 quotes = json.load(f)
                 if quotes: return random.choice(quotes)
         except:
-            pass # Cache corrupt? Fall through to fetch.
+            pass 
 
-    # 2. If no cache, Fetch from Web (One time only)
+    # 2. Fetch from Web (Force Refresh for this test)
     quotes = fetch_and_cache()
     if quotes:
         return random.choice(quotes)
 
-    # 3. Ultimate Fallback (Offline & No Cache)
     return FALLBACK_QUOTE
 
 if __name__ == "__main__":
+    # Force a cache clear so we can see the fix immediately
+    if os.path.exists(CACHE_FILE):
+        os.remove(CACHE_FILE)
     print(get_quote())
