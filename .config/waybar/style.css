@@ -5,7 +5,10 @@ window#waybar {
     background-color: transparent;  
     border-bottom: 0px;  
     color: #EADDFF;  
+    transition: background-color .5s;  
 } 
+
+window#waybar.hidden { opacity: 0.2; } 
 
 .modules-right { margin: 10px 10px 0 0; } 
 .modules-center { margin: 10px 0 0 0; } 
@@ -15,31 +18,50 @@ button { border: none; }
 
 #workspaces { background-color: #2D1B4E; } 
 #workspaces button { padding: 0 5px; background-color: transparent; color: #EADDFF; border-radius: 0; } 
+#workspaces button:first-child { border-radius: 5px 0 0 5px; } 
+#workspaces button:last-child { border-radius: 0 5px 5px 0; } 
+#workspaces button:hover { color: #D0BCFF; } 
+#workspaces button.focused { background-color: #5B3785; } 
 
-#cpu, #memory, #custom-gpu, #custom-quotes, #custom-cava, #clock, #mpris, #wireplumber, #battery, #tray { 
+/* Hardware Group */
+#cpu, #memory, #custom-gpu { 
     background-color: #2D1B4E; 
     color: #EADDFF; 
     padding: 0 10px; 
-    margin: 0 2px;
+    min-width: 130px; 
 } 
+#custom-gpu { min-width: 140px; } 
 
-#custom-cava {
-    color: #8A2BE2;
-    min-width: 100px;
-}
-
-#clock {
-    font-weight: bold;
-    min-width: 150px;
-}
-
+/* FONT FIX: Quotes Specifics */
 #custom-quotes {
-    min-width: 100px;
+    background-color: #2D1B4E;
+    color: #EADDFF;
+    padding: 0 10px;
     font-style: italic;
+    font-family: "JetBrainsMono Nerd Font", serif; 
+}
+
+/* Cava Specifics */
+#custom-cava {
+    background-color: #2D1B4E;
+    color: #8A2BE2;
+    padding: 0 10px;
+    min-width: 100px;
+    font-family: "JetBrainsMono Nerd Font"; 
 }
 
 #hyprland\/submap { background-color: #D0BCFF; color: #1a0b2e; padding: 0 10px; } 
 
+/* Clock (Centered & Clean) */
+#clock { 
+    background-color: #2D1B4E; 
+    color: #EADDFF;
+    min-width: 140px; 
+    padding: 0 5px; 
+    font-weight: bold;
+} 
+
+#mpris, #wireplumber, #battery, #tray { padding: 0 10px; background-color: #2D1B4E; color: #EADDFF; } 
 #wireplumber.muted { background-color: #4A4559; } 
 #mpris.playing { background-color: #7E57C2; } 
 
