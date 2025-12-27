@@ -1,6 +1,6 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------
-# Henry's Hyprland Installer (v5.1 - Neutral Dark & White Cursor)
+# Henry's Hyprland Installer (v5.2 - Materia Dark & White Cursor)
 # -----------------------------------------------------------------------------
 GREEN="\e[32m"; YELLOW="\e[33m"; RED="\e[31m"; RESET="\e[0m"
 DOTFILES_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -32,18 +32,21 @@ PKGS=(
     
     # Apps & Tools
     nautilus firefox vesktop steam pavucontrol
-    python-pywal python-requests python-requests python-requests python-pip cliphist wl-clipboard grimblast-git
+    python-pywal python-pip cliphist wl-clipboard grimblast-git
     polkit-gnome brightnessctl pamixer
     
     # Audio & Visuals
     pipewire wireplumber cava
     
-    # Music (User Requested: AUR Spotify)
+    # DEPENDENCIES (Fixed)
+    python-requests  # Required for Quotes script
+    
+    # Music
     spotify
     
     # Theming Assets
     papirus-icon-theme ttf-jetbrains-mono-nerd ttf-dejavu ttf-font-awesome
-    arc-gtk-theme  # Neutral Dark Theme
+    materia-gtk-theme  # The requested Dark Theme (supports Nautilus/GTK4)
     
     # GPU Drivers
     $GPU_PKGS
@@ -124,12 +127,18 @@ cat > ~/.cache/wal/colors-hyprland.conf <<EOC
 \$color14 = rgb(ffffff)
 EOC
 
-# --- 7. APPLY NEUTRAL THEME ---
-# Set Arc-Dark (Neutral Grey) and Posy's White Cursor
-gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
+# --- 7. APPLY THEME (Materia Dark & White Cursor) ---
+echo "Applying Materia-Dark and Posy_Cursor..."
+gsettings set org.gnome.desktop.interface gtk-theme 'Materia-dark'
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
 gsettings set org.gnome.desktop.interface cursor-theme 'Posy_Cursor'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+
+# Force GTK4 symlink (Nautilus Fix)
+mkdir -p ~/.config/gtk-4.0
+ln -sf /usr/share/themes/Materia-dark/gtk-4.0/gtk.css ~/.config/gtk-4.0/gtk.css
+ln -sf /usr/share/themes/Materia-dark/gtk-4.0/gtk-dark.css ~/.config/gtk-4.0/gtk-dark.css
+ln -sf /usr/share/themes/Materia-dark/gtk-4.0/assets ~/.config/gtk-4.0/assets
 
 echo -e "${GREEN}Installation Complete!${RESET}"
 echo "Reboot now."
