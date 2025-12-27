@@ -1,6 +1,6 @@
 #!/bin/bash
 # -----------------------------------------------------------------------------
-# Henry's Hyprland Installer (v5 - Theming & Transparency Edition)
+# Henry's Hyprland Installer (v5.1 - Neutral Dark & White Cursor)
 # -----------------------------------------------------------------------------
 GREEN="\e[32m"; YELLOW="\e[33m"; RED="\e[31m"; RESET="\e[0m"
 DOTFILES_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -24,22 +24,26 @@ PKGS=(
     dunst network-manager-applet nwg-dock-hyprland
     sddm qt5-graphicaleffects qt5-quickcontrols2
     
-    # Theming Tools (Take 5)
+    # Theming Tools
     nwg-look qt5ct qt6ct kvantum unzip curl git
     
     # Terminal & Shell
     alacritty fish fastfetch
     
     # Apps & Tools
-    nautilus firefox vesktop spotify-launcher steam pavucontrol
+    nautilus firefox vesktop steam pavucontrol
     python-pywal python-pip cliphist wl-clipboard grimblast-git
     polkit-gnome brightnessctl pamixer
     
     # Audio & Visuals
     pipewire wireplumber cava
     
-    # Theming Assets (Base)
+    # Music (User Requested: AUR Spotify)
+    spotify
+    
+    # Theming Assets
     papirus-icon-theme ttf-jetbrains-mono-nerd ttf-dejavu ttf-font-awesome
+    arc-gtk-theme  # Neutral Dark Theme
     
     # GPU Drivers
     $GPU_PKGS
@@ -59,31 +63,19 @@ else
     yay -Sy --needed --noconfirm "${PKGS[@]}"
 fi
 
-# --- 3. CONFIGURE SDDM (Login Screen) ---
+# --- 3. CONFIGURE SDDM ---
 echo -e "${YELLOW}Enabling SDDM...${RESET}"
 sudo systemctl enable sddm
 sudo mkdir -p /etc/sddm.conf.d
 
-# --- 4. INSTALL CUSTOM THEMES (Take 5) ---
-echo -e "${YELLOW}Installing Custom Themes & Cursors...${RESET}"
-
-# Install Posy's Cursor
-if [ ! -d "$HOME/.icons/Posy_Cursor_Black" ]; then
-    echo "Downloading Posy's Cursor..."
+# --- 4. INSTALL CUSTOM CURSOR (Posy White) ---
+echo -e "${YELLOW}Installing Posy's White Cursor...${RESET}"
+if [ ! -d "$HOME/.icons/Posy_Cursor" ]; then
     mkdir -p ~/.icons
     git clone https://github.com/simtrami/posy-improved-cursor-linux.git /tmp/posy-cursor
-    cp -r /tmp/posy-cursor/Posy_Cursor_Black ~/.icons/
-    cp -r /tmp/posy-cursor/Posy_Cursor_Black_V ~/.icons/
+    # "Posy_Cursor" is the white version
+    cp -r /tmp/posy-cursor/Posy_Cursor ~/.icons/
     rm -rf /tmp/posy-cursor
-fi
-
-# Install Catppuccin Mocha GTK Theme
-if [ ! -d "$HOME/.themes/Catppuccin-Mocha-Standard-Blue-Dark" ]; then
-    echo "Downloading Catppuccin Mocha Theme..."
-    mkdir -p ~/.themes
-    curl -L -o /tmp/Mocha.zip https://github.com/catppuccin/gtk/releases/download/v0.7.1/Catppuccin-Mocha-Standard-Blue-Dark.zip
-    unzip -o /tmp/Mocha.zip -d ~/.themes/
-    rm /tmp/Mocha.zip
 fi
 
 # --- 5. LINK DOTFILES ---
@@ -116,57 +108,28 @@ link_config ".config/waypaper/config.ini"
 rm -rf "$HOME/.config/nwg-dock-hyprland"
 ln -s "$DOTFILES_DIR/.config/nwg-dock-hyprland" "$HOME/.config/nwg-dock-hyprland"
 
-# Make scripts executable
 chmod +x "$HOME/.config/waybar/scripts/quotes.py"
 
-# Fix Source Paths for the current user
+# Fix Source Paths
 sed -i "s|/home/henrys|$HOME|g" $HOME/.config/hypr/hyprland.conf
 sed -i "s|HOME_DIR|$HOME|g" $HOME/.config/waypaper/config.ini
 
 # --- 6. BOOTSTRAP COLORS ---
-echo -e "${YELLOW}Generating bootstrap colors...${RESET}"
 mkdir -p ~/.cache/wal
 cat > ~/.cache/wal/colors-hyprland.conf <<EOC
 \$background = rgb(111111)
 \$foreground = rgb(eeeeee)
 \$color0 = rgb(111111)
-\$color1 = rgb(888888)
-\$color2 = rgb(888888)
-\$color3 = rgb(888888)
-\$color4 = rgb(888888)
-\$color5 = rgb(888888)
-\$color6 = rgb(888888)
-\$color7 = rgb(eeeeee)
-\$color8 = rgb(444444)
-\$color9 = rgb(888888)
-\$color10 = rgb(888888)
 \$color11 = rgb(888888)
-\$color12 = rgb(888888)
-\$color13 = rgb(888888)
 \$color14 = rgb(ffffff)
-\$color15 = rgb(ffffff)
 EOC
 
-# --- 7. WALLPAPERS & THEME ---
-if [ -d "$DOTFILES_DIR/wallpapers" ]; then
-    echo "Copying wallpapers..."
-    mkdir -p ~/Pictures/wallpapers
-    cp -r "$DOTFILES_DIR/wallpapers/"* ~/Pictures/wallpapers/
-fi
-
-# Apply standard dark settings
-gsettings set org.gnome.desktop.interface gtk-theme 'Catppuccin-Mocha-Standard-Blue-Dark'
+# --- 7. APPLY NEUTRAL THEME ---
+# Set Arc-Dark (Neutral Grey) and Posy's White Cursor
+gsettings set org.gnome.desktop.interface gtk-theme 'Arc-Dark'
 gsettings set org.gnome.desktop.interface icon-theme 'Papirus'
-gsettings set org.gnome.desktop.interface cursor-theme 'Posy_Cursor_Black'
+gsettings set org.gnome.desktop.interface cursor-theme 'Posy_Cursor'
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-# --- 8. SAFETY DEBLOAT ---
-for pkg in wofi kitty foot dolphin mako; do
-    if pacman -Qi $pkg &>/dev/null; then
-        echo "Removing conflicting app: $pkg"
-        sudo pacman -Rns --noconfirm $pkg 2>/dev/null
-    fi
-done
-
 echo -e "${GREEN}Installation Complete!${RESET}"
-echo "Reboot now. You should see the SDDM Login Screen."
+echo "Reboot now."
