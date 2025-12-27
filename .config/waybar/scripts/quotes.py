@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import requests, json, random, re, sys
+import requests, json, random, re
 URL = "https://jamies.page/assets/static/navibar"
 try:
     response = requests.get(URL, timeout=5)
