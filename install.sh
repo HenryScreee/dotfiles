@@ -32,7 +32,7 @@ PKGS=(
     
     # Apps & Tools
     nautilus firefox vesktop steam pavucontrol
-    python-pywal python-pip cliphist wl-clipboard grimblast-git
+    python-pywal python-requests python-requests python-pip cliphist wl-clipboard grimblast-git
     polkit-gnome brightnessctl pamixer
     
     # Audio & Visuals
