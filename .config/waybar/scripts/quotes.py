@@ -1,33 +1,60 @@
 #!/usr/bin/env python3
-import requests, json, random, re, os
+import json, random, os, sys
+
+# Try imports, fail gracefully if requests is missing (should be fixed now though)
+try:
+    import requests
+except ImportError:
+    sys.exit(1)
 
 URL = "https://jamies.page/assets/static/navibar"
-CACHE_FILE = os.path.expanduser("~/.cache/waybar_quote_cache")
+CACHE_FILE = "/tmp/jamie_quotes_cache.json"
+FALLBACK_QUOTE = "Focus."
 
-def get_quote():
+def fetch_and_cache():
+    """Fetches the full list of quotes and saves to /tmp"""
     try:
-        response = requests.get(URL, timeout=3)
+        response = requests.get(URL, timeout=5)
+        response.raise_for_status()
         content = response.text
-        try: 
+        
+        # Jamie's API sometimes returns raw JS arrays like ['a','b'] instead of strict JSON
+        # If json.loads fails, we wrap it in valid syntax or Regex it.
+        try:
             quotes = json.loads(content)
         except json.JSONDecodeError:
+            import re
             match = re.search(r'\[(.*?)\]', content, re.DOTALL)
-            quotes = json.loads(f"[{match.group(1)}]") if match else []
-        
-        if quotes:
-            quote = random.choice(quotes)
-            # Save to cache
-            with open(CACHE_FILE, "w") as f:
-                f.write(quote)
-            return quote
-    except:
-        pass
-    
-    # Fallback to cache if network fails
-    if os.path.exists(CACHE_FILE):
-        with open(CACHE_FILE, "r") as f:
-            return f.read().strip()
-            
-    return "Focus." # Ultimate fallback
+            if match:
+                quotes = json.loads(f"[{match.group(1)}]")
+            else:
+                return []
 
-print(get_quote())
+        if quotes:
+            with open(CACHE_FILE, "w") as f:
+                json.dump(quotes, f)
+            return quotes
+    except Exception:
+        return []
+    return []
+
+def get_quote():
+    # 1. Try to read from local Cache (0 Network)
+    if os.path.exists(CACHE_FILE):
+        try:
+            with open(CACHE_FILE, "r") as f:
+                quotes = json.load(f)
+                if quotes: return random.choice(quotes)
+        except:
+            pass # Cache corrupt? Fall through to fetch.
+
+    # 2. If no cache, Fetch from Web (One time only)
+    quotes = fetch_and_cache()
+    if quotes:
+        return random.choice(quotes)
+
+    # 3. Ultimate Fallback (Offline & No Cache)
+    return FALLBACK_QUOTE
+
+if __name__ == "__main__":
+    print(get_quote())
