@@ -148,3 +148,4 @@ done
 
 echo -e "${GREEN}Installation Complete!${RESET}"
 echo "Reboot now. You should see the SDDM Login Screen."
+sudo pacman -S --noconfirm cava
