@@ -1,3 +1,6 @@
+# --- COLOR IMPORT MUST BE FIRST ---
+import = ["~/.cache/wal/colors-alacritty.toml"]
+
 [window]
 padding = { x = 15, y = 15 }
 opacity = 0.80
@@ -7,8 +10,10 @@ decorations = "None"
 size = 11.0
 normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
 
-# This is the magic line that links to Pywal
-import = ["~/.cache/wal/colors-alacritty.toml"]
+[colors.primary]
+# Fallback colors in case import fails
+background = "#1E1E1E"
+foreground = "#D8DEE9"
 
 [env]
 TERM = "xterm-256color"
