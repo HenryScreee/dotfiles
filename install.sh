@@ -133,3 +133,24 @@ if [ -d "$HOME/dotfiles/wallpapers" ]; then
         echo "Warning: No wallpapers found to initialize colors."
     fi
 fi
+
+echo "=== FIXING PYWAL TEMPLATES ==="
+# 1. Nuke the old folder to prevent recursion bugs
+rm -rf ~/.config/wal/templates
+
+# 2. Create the parent directory
+mkdir -p ~/.config/wal
+
+# 3. COPY the templates (Safer than symlinking)
+cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+
+# 4. Initialize Colors (Now guaranteed to find the templates)
+if [ -d "$HOME/dotfiles/wallpapers" ]; then
+    echo "Initializing Pywal..."
+    FIRST_WALL=$(find ~/dotfiles/wallpapers -type f \( -name "*.jpg" -o -name "*.png" \) | head -n 1)
+    if [ -n "$FIRST_WALL" ]; then
+        wal -i "$FIRST_WALL"
+    else
+        echo "Warning: No wallpapers found."
+    fi
+fi
