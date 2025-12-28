@@ -27,6 +27,8 @@ yay -S --noconfirm hyprland sddm waybar rofi-wayland alacritty dunst swww \
     thunar thunar-volman thunar-archive-plugin gvfs file-roller
 
 echo "=== 3. INSTALLING CONFIGS ==="
+mkdir -p ~/.config/fish
+cp -rf ~/dotfiles/.config/fish/* ~/.config/fish/
 mkdir -p ~/.config
 # Copy ALL dotfiles to system config (Force overwrite)
 cp -rf ~/dotfiles/.config/* ~/.config/
