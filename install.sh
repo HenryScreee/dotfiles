@@ -185,3 +185,31 @@ if [ -d "$HOME/dotfiles/wallpapers" ]; then
         echo "Warning: No wallpapers found."
     fi
 fi
+
+echo "=== FINALIZING SETUP ==="
+
+# 1. Automate Nautilus Fix (So you don't have to run the script manually)
+echo "Applying GTK Dark Mode..."
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+# Ensure the folder exists for local settings
+mkdir -p ~/.config/gtk-4.0
+echo -e "[Settings]\ngtk-application-prefer-dark-theme=1" > ~/.config/gtk-4.0/settings.ini
+
+# 2. Fix Pywal Templates (Safe Copy)
+echo "Setting up Color Templates..."
+# Delete any existing folder/symlink to avoid crashes
+rm -rf ~/.config/wal/templates
+mkdir -p ~/.config/wal
+# Copy the verified templates from the repo
+cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+
+# 3. Initialize Colors
+if [ -d "$HOME/dotfiles/wallpapers" ]; then
+    echo "Initializing Pywal..."
+    # Find the first image
+    FIRST_WALL=$(find ~/dotfiles/wallpapers -type f \( -name "*.jpg" -o -name "*.png" \) | head -n 1)
+    if [ -n "$FIRST_WALL" ]; then
+        wal -i "$FIRST_WALL"
+    fi
+fi
