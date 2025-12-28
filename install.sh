@@ -142,7 +142,8 @@ rm -rf ~/.config/wal/templates
 mkdir -p ~/.config/wal
 
 # 3. COPY the templates (Safer than symlinking)
-cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+mkdir -p ~/.config/wal/templates
+cp -r ~/dotfiles/.config/wal/templates/* ~/.config/wal/templates/
 
 # 4. Initialize Colors (Now guaranteed to find the templates)
 if [ -d "$HOME/dotfiles/wallpapers" ]; then
@@ -173,7 +174,8 @@ fi
 rm -rf ~/.config/wal/templates
 mkdir -p ~/.config/wal
 # Copy the populated templates from the repo
-cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+mkdir -p ~/.config/wal/templates
+cp -r ~/dotfiles/.config/wal/templates/* ~/.config/wal/templates/
 
 # 4. Initialize Colors
 if [ -d "$HOME/dotfiles/wallpapers" ]; then
@@ -202,7 +204,8 @@ echo "Setting up Color Templates..."
 rm -rf ~/.config/wal/templates
 mkdir -p ~/.config/wal
 # Copy the verified templates from the repo
-cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+mkdir -p ~/.config/wal/templates
+cp -r ~/dotfiles/.config/wal/templates/* ~/.config/wal/templates/
 
 # 3. Initialize Colors
 if [ -d "$HOME/dotfiles/wallpapers" ]; then
@@ -237,7 +240,8 @@ echo "Installing Color Templates..."
 rm -rf ~/.config/wal/templates
 mkdir -p ~/.config/wal
 # We COPY the files we verified on the host
-cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+mkdir -p ~/.config/wal/templates
+cp -r ~/dotfiles/.config/wal/templates/* ~/.config/wal/templates/
 
 # D. Initialize Colors (First Boot)
 if [ -d "$HOME/dotfiles/wallpapers" ]; then
