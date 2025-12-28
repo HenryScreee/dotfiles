@@ -1,11 +1,10 @@
 if status is-interactive
+    # Hide the default "Welcome to Fish" message
     set -g fish_greeting
     
-    # --- PYWAL PERSISTENCE ---
-    # This applies the colors to the current terminal window immediately
-    cat ~/.cache/wal/sequences &
+    # Apply Pywal colors (silently)
+    wal -R -q
     
-    if type -q fastfetch
-        fastfetch
-    end
+    # Run the fetch tool
+    fastfetch
 end

@@ -23,7 +23,7 @@ yay -S --noconfirm hyprland sddm waybar rofi-wayland alacritty dunst swww \
     qt5-wayland qt6-wayland polkit-gnome \
     ttf-font-awesome ttf-jetbrains-mono-nerd \
     python-pywal libadwaita gnome-themes-extra \
-    fish firefox grimblast \
+    fish firefox grimblast fastfetch \
     thunar thunar-volman thunar-archive-plugin gvfs file-roller
 
 echo "=== 3. INSTALLING CONFIGS ==="
