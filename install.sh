@@ -55,4 +55,7 @@ if [ -d "$HOME/dotfiles/wallpapers" ]; then
     fi
 fi
 
+echo "=== 7. SETTING SHELL TO FISH ==="
+chsh -s /usr/bin/fish
+
 echo "=== INSTALL COMPLETE ==="
