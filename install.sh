@@ -32,12 +32,12 @@ yay -S --noconfirm \
     hyprland sddm waybar rofi-wayland alacritty dunst swww \
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
     qt5-wayland qt6-wayland \
-    polkit-gnome \
+    polkit-gnome xwaylandvideobridge \
     pipewire pipewire-pulse wireplumber \
     wl-clipboard cliphist \
     pavucontrol playerctl brightnessctl \
     network-manager-applet blueman \
-    xwaylandvideobridge-git \
+     \
     ttf-font-awesome ttf-jetbrains-mono-nerd noto-fonts-emoji \
     python-pywal libadwaita gnome-themes-extra \
     thunar thunar-volman thunar-archive-plugin gvfs file-roller \
