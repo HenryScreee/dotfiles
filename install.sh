@@ -121,3 +121,15 @@ sudo systemctl enable sddm
 echo -e "${GREEN}Installation Complete! Rebooting...${RESET}"
 sleep 3
 reboot
+
+# --- INITIALIZE COLORS ---
+if [ -d "$HOME/dotfiles/wallpapers" ]; then
+    echo "Initializing Pywal..."
+    # Grabs the first image found in the wallpapers folder
+    FIRST_WALL=$(find ~/dotfiles/wallpapers -type f \( -name "*.jpg" -o -name "*.png" \) | head -n 1)
+    if [ -n "$FIRST_WALL" ]; then
+        wal -i "$FIRST_WALL"
+    else
+        echo "Warning: No wallpapers found to initialize colors."
+    fi
+fi
