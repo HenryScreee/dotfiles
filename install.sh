@@ -213,3 +213,37 @@ if [ -d "$HOME/dotfiles/wallpapers" ]; then
         wal -i "$FIRST_WALL"
     fi
 fi
+
+echo "=== 9. FINAL SYSTEM CONFIGURATION ==="
+
+# A. Force Nautilus Dark Mode (File-Based Method)
+# This works even if gsettings fails during install
+mkdir -p ~/.config/gtk-4.0
+cat > ~/.config/gtk-4.0/settings.ini <<INI
+[Settings]
+gtk-application-prefer-dark-theme=1
+gtk-cursor-theme-name=Posy_Cursor
+gtk-icon-theme-name=Papirus
+INI
+
+# B. Install the missing Portal (Required for Nautilus to listen)
+if ! pacman -Qs xdg-desktop-portal-gtk > /dev/null; then
+    echo "Installing GTK Portal..."
+    sudo pacman -S --noconfirm xdg-desktop-portal-gtk
+fi
+
+# C. Setup Pywal Templates (Copy, don't Generate)
+echo "Installing Color Templates..."
+rm -rf ~/.config/wal/templates
+mkdir -p ~/.config/wal
+# We COPY the files we verified on the host
+cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+
+# D. Initialize Colors (First Boot)
+if [ -d "$HOME/dotfiles/wallpapers" ]; then
+    echo "Initializing Colors..."
+    FIRST_WALL=$(find ~/dotfiles/wallpapers -type f \( -name "*.jpg" -o -name "*.png" \) | head -n 1)
+    if [ -n "$FIRST_WALL" ]; then
+        wal -i "$FIRST_WALL"
+    fi
+fi
