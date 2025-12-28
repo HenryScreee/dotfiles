@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-echo "=== 1. PREPARING SYSTEM (Multilib & YAY) ==="
+echo "=== 1. PREPARING SYSTEM ==="
 # Enable Multilib (Required for Steam)
 if grep -q "#\[multilib\]" /etc/pacman.conf; then
     echo "-> Enabling Multilib repository..."
@@ -26,14 +26,19 @@ fi
 
 echo "=== 2. INSTALLING PACKAGES ==="
 # CORE: Hyprland, SDDM, Waybar, etc.
+# QOL: Pipewire, Cliphist, Playerctl, Blueman, Pavucontrol, XWaylandVideoBridge
 # APPS: Thunar, Firefox, Fish, Steam, Spotify, Vesktop
-# UTILS: Fastfetch, Grimblast, Polkit-Gnome
 yay -S --noconfirm \
     hyprland sddm waybar rofi-wayland alacritty dunst swww \
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
     qt5-wayland qt6-wayland \
     polkit-gnome \
-    ttf-font-awesome ttf-jetbrains-mono-nerd \
+    pipewire pipewire-pulse wireplumber \
+    wl-clipboard cliphist \
+    pavucontrol playerctl brightnessctl \
+    network-manager-applet blueman \
+    xwaylandvideobridge-git \
+    ttf-font-awesome ttf-jetbrains-mono-nerd noto-fonts-emoji \
     python-pywal libadwaita gnome-themes-extra \
     thunar thunar-volman thunar-archive-plugin gvfs file-roller \
     fish firefox grimblast fastfetch \
@@ -58,6 +63,8 @@ INI
 
 echo "=== 5. ENABLING SERVICES ==="
 sudo systemctl enable sddm
+sudo systemctl enable bluetooth
+sudo systemctl enable NetworkManager
 
 echo "=== 6. GENERATING COLORS ==="
 if [ -d "$HOME/dotfiles/wallpapers" ]; then
