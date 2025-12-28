@@ -2,10 +2,8 @@
 set -e
 
 echo "=== 1. INSTALLING YAY (AUR HELPER) ==="
-# We need git and base-devel to compile yay
 sudo pacman -S --noconfirm git base-devel
 
-# Clone and build yay
 if ! command -v yay &> /dev/null; then
     echo "-> Building yay..."
     git clone https://aur.archlinux.org/yay.git
@@ -18,14 +16,15 @@ else
 fi
 
 echo "=== 2. INSTALLING PACKAGES ==="
-# Added: nautilus, fish, firefox, grimblast
-# We use yay here just in case, but pacman works for these too
+# REMOVED: nautilus
+# ADDED: thunar, thunar-volman, thunar-archive-plugin, gvfs, file-roller
 yay -S --noconfirm hyprland sddm waybar rofi-wayland alacritty dunst swww \
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
     qt5-wayland qt6-wayland polkit-kde-agent \
     ttf-font-awesome ttf-jetbrains-mono-nerd \
     python-pywal libadwaita gnome-themes-extra \
-    nautilus fish firefox grimblast
+    fish firefox grimblast \
+    thunar thunar-volman thunar-archive-plugin gvfs file-roller
 
 echo "=== 3. INSTALLING CONFIGS ==="
 mkdir -p ~/.config
@@ -36,7 +35,7 @@ echo "=== 4. SETUP TEMPLATES & DARK MODE ==="
 mkdir -p ~/.config/wal/templates
 mkdir -p ~/.config/gtk-4.0
 
-# Enforce Dark Mode
+# Enforce Dark Mode (Thunar reads this too!)
 cat > ~/.config/gtk-4.0/settings.ini <<INI
 [Settings]
 gtk-application-prefer-dark-theme=1
