@@ -1,9 +1,18 @@
 #!/bin/bash
 set -e
 
-echo "=== 1. INSTALLING YAY (AUR HELPER) ==="
+echo "=== 1. PREPARING SYSTEM (Multilib & YAY) ==="
+# Enable Multilib (Required for Steam)
+if grep -q "#\[multilib\]" /etc/pacman.conf; then
+    echo "-> Enabling Multilib repository..."
+    sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+    sudo pacman -Sy
+fi
+
+# Install Git & Base-Devel
 sudo pacman -S --noconfirm git base-devel
 
+# Install YAY (AUR Helper)
 if ! command -v yay &> /dev/null; then
     echo "-> Building yay..."
     git clone https://aur.archlinux.org/yay.git
@@ -16,28 +25,30 @@ else
 fi
 
 echo "=== 2. INSTALLING PACKAGES ==="
-# REMOVED: nautilus
-# ADDED: thunar, thunar-volman, thunar-archive-plugin, gvfs, file-roller
-yay -S --noconfirm hyprland sddm waybar rofi-wayland alacritty dunst swww \
+# CORE: Hyprland, SDDM, Waybar, etc.
+# APPS: Thunar, Firefox, Fish, Steam, Spotify, Vesktop
+# UTILS: Fastfetch, Grimblast, Polkit-Gnome
+yay -S --noconfirm \
+    hyprland sddm waybar rofi-wayland alacritty dunst swww \
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
-    qt5-wayland qt6-wayland polkit-gnome \
+    qt5-wayland qt6-wayland \
+    polkit-gnome \
     ttf-font-awesome ttf-jetbrains-mono-nerd \
     python-pywal libadwaita gnome-themes-extra \
+    thunar thunar-volman thunar-archive-plugin gvfs file-roller \
     fish firefox grimblast fastfetch \
-    thunar thunar-volman thunar-archive-plugin gvfs file-roller
+    steam spotify vesktop
 
 echo "=== 3. INSTALLING CONFIGS ==="
-mkdir -p ~/.config/fish
-cp -rf ~/dotfiles/.config/fish/* ~/.config/fish/
 mkdir -p ~/.config
-# Copy ALL dotfiles to system config (Force overwrite)
+# Copy ALL dotfiles to system config
 cp -rf ~/dotfiles/.config/* ~/.config/
 
 echo "=== 4. SETUP TEMPLATES & DARK MODE ==="
 mkdir -p ~/.config/wal/templates
 mkdir -p ~/.config/gtk-4.0
 
-# Enforce Dark Mode (Thunar reads this too!)
+# Enforce Dark Mode
 cat > ~/.config/gtk-4.0/settings.ini <<INI
 [Settings]
 gtk-application-prefer-dark-theme=1
@@ -58,6 +69,10 @@ if [ -d "$HOME/dotfiles/wallpapers" ]; then
 fi
 
 echo "=== 7. SETTING SHELL TO FISH ==="
-chsh -s /usr/bin/fish
+# Only run if fish isn't already the shell
+if [[ "$SHELL" != */fish ]]; then
+    chsh -s /usr/bin/fish
+fi
 
 echo "=== INSTALL COMPLETE ==="
+echo "Please reboot your system."
