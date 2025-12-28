@@ -1,20 +1,19 @@
 #!/bin/bash
-set -e # Exit immediately if a command fails
+set -e
 
-echo "=== STARTING CLEAN INSTALL ==="
+echo "=== 1. INSTALLING PACKAGES ==="
+# We MUST install pywal before we can use it!
+# We also ensure other core tools are present.
+sudo pacman -S --noconfirm python-pywal libadwaita xdg-desktop-portal-gtk gnome-themes-extra
 
-# 1. SETUP WAL TEMPLATES
-echo "-> Installing Color Templates..."
-# Create the config directory safely
+echo "=== 2. INSTALLING TEMPLATES ==="
+# Create the directory
 mkdir -p ~/.config/wal/templates
-# Copy the files from the repo to the config folder
-# We use 'cp' instead of 'ln' to prevent symlink looping crashes
+# Copy the verified static templates from the repo
 cp -f ~/dotfiles/.config/wal/templates/* ~/.config/wal/templates/
 
-# 2. SETUP GTK / NAUTILUS
-echo "-> Configuring Dark Mode..."
+echo "=== 3. CONFIGURING DARK MODE ==="
 mkdir -p ~/.config/gtk-4.0
-# Force dark mode file
 cat > ~/.config/gtk-4.0/settings.ini <<INI
 [Settings]
 gtk-application-prefer-dark-theme=1
@@ -22,21 +21,16 @@ gtk-theme-name=Adwaita-dark
 gtk-icon-theme-name=Papirus
 INI
 
-# 3. INITIALIZE COLORS
-echo "-> Generating Colors..."
+echo "=== 4. GENERATING COLORS ==="
+# Now that 'wal' is installed, this command will actually work
 if [ -d "$HOME/dotfiles/wallpapers" ]; then
-    # Grab the first image found
     WALLPAPER=$(find ~/dotfiles/wallpapers -type f \( -name "*.jpg" -o -name "*.png" \) | head -n 1)
-    
     if [ -n "$WALLPAPER" ]; then
-        echo "   Using wallpaper: $WALLPAPER"
+        echo "-> Generating colors from: $WALLPAPER"
         wal -i "$WALLPAPER"
     else
-        echo "   [!] No wallpaper found in ~/dotfiles/wallpapers."
+        echo "-> Warning: No wallpapers found."
     fi
-else
-    echo "   [!] Wallpaper folder missing."
 fi
 
-echo "=== INSTALL COMPLETE ==="
-echo "Please reboot your system."
+echo "=== DONE! REBOOT NOW. ==="
