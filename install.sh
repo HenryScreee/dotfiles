@@ -81,5 +81,18 @@ if [[ "$SHELL" != */fish ]]; then
     chsh -s /usr/bin/fish
 fi
 
+
+echo "=== 8. INSTALLING POSY CURSOR ==="
+mkdir -p ~/.icons
+# Download the specific cursor tarball (using a reliable mirror or repo)
+# We will use a known working repo for Posy's cursor
+if [ ! -d "$HOME/.icons/Posy_Cursor" ]; then
+    echo "-> Downloading Posy Cursor..."
+    git clone https://github.com/simtrami/posy-improved-cursor-linux.git /tmp/posy-cursor
+    cp -r /tmp/posy-cursor/Posy_Cursor ~/.icons/
+    rm -rf /tmp/posy-cursor
+else
+    echo "-> Posy Cursor already installed."
+fi
 echo "=== INSTALL COMPLETE ==="
 echo "Please reboot your system."
