@@ -14,7 +14,7 @@ sudo pacman -S --needed --noconfirm git base-devel python python-pip python-requ
 
 # --- 2. INSTALL PACKAGES ---
 PKGS=(
-    hyprland hypridle hyprlock waybar swww waypaper rofi-wayland
+    hyprland hypridle hyprlock waybar swww waypaper rofi-wayland xdg-desktop-portal-gtk
     dunst network-manager-applet nwg-dock-hyprland sddm
     qt5-graphicaleffects qt5-quickcontrols2
     nwg-look qt5ct qt6ct kvantum unzip curl
