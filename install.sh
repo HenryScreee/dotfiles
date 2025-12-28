@@ -29,7 +29,7 @@ echo "=== 2. INSTALLING PACKAGES ==="
 # QOL: Pipewire, Cliphist, Playerctl, Blueman, Pavucontrol, XWaylandVideoBridge
 # APPS: Thunar, Firefox, Fish, Steam, Spotify, Vesktop
 yay -S --noconfirm \
-    hyprland sddm waybar cava rofi-wayland alacritty dunst swww \
+    hyprland sddm waybar-cava cava rofi-wayland alacritty dunst swww \
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
     qt5-wayland qt6-wayland \
     polkit-gnome xwaylandvideobridge \
