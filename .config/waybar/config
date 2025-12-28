@@ -4,7 +4,11 @@
     "modules-center": [ "clock" ], 
     "modules-right": [ "mpris", "custom/cava", "wireplumber", "battery", "tray" ],
 
-    "cpu": { "interval": 2, "format": "CPU {usage}%", "max-length": 15 },
+    "cpu": { 
+        "interval": 2, 
+        "format": "CPU {usage}% {avg_frequency}GHz", 
+        "max-length": 20 
+    },
     "memory": { "interval": 5, "format": "RAM {used:0.1f}G", "max-length": 15 },
     "hyprland/submap": { "format": "{}" },
     
