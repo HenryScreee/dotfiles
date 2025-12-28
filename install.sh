@@ -154,3 +154,34 @@ if [ -d "$HOME/dotfiles/wallpapers" ]; then
         echo "Warning: No wallpapers found."
     fi
 fi
+
+echo "=== FINAL CONFIGURATION ==="
+
+# 1. Fix Nautilus / GTK4 Dark Mode (The Official Way)
+# This ensures Nautilus knows it should be dark
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+
+# 2. Install Missing Portal (Crucial for Nautilus themes)
+if ! pacman -Qs xdg-desktop-portal-gtk > /dev/null; then
+    echo "Installing GTK Portal..."
+    sudo pacman -S --noconfirm xdg-desktop-portal-gtk
+fi
+
+# 3. FIX PYWAL TEMPLATES (The "Safe Copy" Method)
+# We delete the destination first to prevent the "folder inside folder" crash
+rm -rf ~/.config/wal/templates
+mkdir -p ~/.config/wal
+# Copy the populated templates from the repo
+cp -r ~/dotfiles/.config/wal/templates ~/.config/wal/
+
+# 4. Initialize Colors
+if [ -d "$HOME/dotfiles/wallpapers" ]; then
+    echo "Initializing Pywal..."
+    FIRST_WALL=$(find ~/dotfiles/wallpapers -type f \( -name "*.jpg" -o -name "*.png" \) | head -n 1)
+    if [ -n "$FIRST_WALL" ]; then
+        wal -i "$FIRST_WALL"
+    else
+        echo "Warning: No wallpapers found."
+    fi
+fi
