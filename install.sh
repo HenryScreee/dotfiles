@@ -20,7 +20,7 @@ echo "=== 2. INSTALLING PACKAGES ==="
 # ADDED: thunar, thunar-volman, thunar-archive-plugin, gvfs, file-roller
 yay -S --noconfirm hyprland sddm waybar rofi-wayland alacritty dunst swww \
     xdg-desktop-portal-hyprland xdg-desktop-portal-gtk \
-    qt5-wayland qt6-wayland polkit-kde-agent \
+    qt5-wayland qt6-wayland polkit-gnome \
     ttf-font-awesome ttf-jetbrains-mono-nerd \
     python-pywal libadwaita gnome-themes-extra \
     fish firefox grimblast \
