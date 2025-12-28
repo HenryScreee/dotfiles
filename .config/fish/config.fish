@@ -1,6 +1,11 @@
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+    set -g fish_greeting
+    if type -q fastfetch
+        fastfetch
+    end
+end
 
-
-# Added by LM Studio CLI (lms)
-set -gx PATH $PATH /home/henrys/.lmstudio/bin
-
-fish_add_path /home/henrys/.spicetify
+# Environment variables
+set -gx EDITOR nano
+set -gx VISUAL nano
