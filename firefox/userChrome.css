@@ -1,0 +1,10 @@
+/* Transparent Firefox */
+#main-window { background: transparent !important; }
+#navigator-toolbox { background-color: transparent !important; }
+#TabsToolbar { background: transparent !important; }
+#nav-bar { background: transparent !important; }
+#urlbar-background { background: rgba(30, 30, 30, 0.4) !important; }
+.tab-background { background: transparent !important; }
+.tab-background[selected="true"] { background: rgba(255, 255, 255, 0.1) !important; }
+/* Remove white flash on load */
+browser[type="content-primary"], tabbrowser tabpanels, #appcontent > #content { background: transparent !important; }
