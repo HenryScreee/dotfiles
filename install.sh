@@ -35,7 +35,7 @@ yay -S --noconfirm \
     polkit-gnome xwaylandvideobridge \
     pipewire pipewire-pulse wireplumber \
     wl-clipboard cliphist \
-    pavucontrol pamixer playerctl brightnessctl \
+    pavucontrol pamixer wev playerctl brightnessctl \
     network-manager-applet blueman \
      \
     ttf-font-awesome ttf-jetbrains-mono-nerd noto-fonts-emoji \
