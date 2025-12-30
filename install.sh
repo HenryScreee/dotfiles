@@ -94,5 +94,8 @@ if [ ! -d "$HOME/.icons/Posy_Cursor" ]; then
 else
     echo "-> Posy Cursor already installed."
 fi
+# Remove speech-dispatcher (Causes volume ducking issues in Firefox)
+sudo pacman -Rdd --noconfirm speech-dispatcher 2>/dev/null || true
+
 echo "=== INSTALL COMPLETE ==="
 echo "Please reboot your system."
