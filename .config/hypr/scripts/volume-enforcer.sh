@@ -1,17 +1,21 @@
 #!/bin/bash
 
-# Infinite loop to police volume
 while true; do
-    # Find all audio inputs belonging to Firefox
-    # We use 'pactl' to list them, find the ID, and force volume to 100% (65536 is 100% in integer math, or just use 100%)
-    
-    pactl list sink-inputs short | grep -i "firefox" | cut -f1 | while read -r id; do
-        # Mute status: Unmute it
-        pactl set-sink-input-mute "$id" 0
-        # Volume status: Force to 100%
-        pactl set-sink-input-volume "$id" 100%
+    # 1. Get a list of all current audio stream IDs
+    # (pactl list short returns: ID SINK PROTOCOL ...)
+    for id in $(pactl list sink-inputs short | cut -f1); do
+        
+        # 2. Check if this specific ID belongs to Firefox
+        # We query the details for this ID and grep for the name
+        if pactl list sink-inputs | grep -A 20 "Sink Input #$id" | grep -i "firefox" > /dev/null; then
+            
+            # 3. Found it! Force it to 100% (65536)
+            # We also unmute it just in case.
+            pactl set-sink-input-mute "$id" 0
+            pactl set-sink-input-volume "$id" 100%
+        fi
     done
-    
-    # Wait 1 second before checking again
+
+    # Check again every second
     sleep 1
 done
